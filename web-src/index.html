@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>紹介状作成</title>
+</head>
+<body>
+<h1>紹介状作成</h1>
+
+<div>
+    <button id="patientButton">患者</button>
+    <button id="editButton">編集</button>
+    <button id="printButton">印刷</button>
+    <select id="selectTitle">
+        <option>紹介状</option>
+        <option>ご報告</option>
+    </select>
+    <select id="selectPrinter">
+        <option value="">プリンター選択なし</option>
+    </select>
+    <button id="addPrinterButton">プリンター設定</button>
+</div>
+
+<div id="selectPatientArea" style="display:none">
+    患者番号
+    <input id="patientIdInput" type="text"/>
+    <button id="enterPatientButton">選択</button>
+</div>
+
+<div id="editArea" style="display:none">
+    <div>
+        <select id="predefined">
+            <option value="prompt">(紹介先選択)</option>
+        </select>
+    </div>
+    <div>
+        紹介先
+        <input id="refer-hospital-input">
+    </div>
+    <div>
+        紹介科
+        <input id="refer-section-input">
+    </div>
+    <div>
+        紹介医師
+        <input id="refer-doctor-input">
+        先生
+    </div>
+    <div>
+        氏名
+        <input id="name-input">
+    </div>
+    <div>
+        生年月日
+        <input id="birthday-input">
+    </div>
+    <div>
+        年齢
+        <input id="age-input">
+        才
+    </div>
+    <div>
+        性別
+        <input id="sex-input">
+    </div>
+    <div>
+        診断名
+        <input id="diagnosis-input">
+    </div>
+    <textarea id="content-input" style="width:400px;height:200px;"></textarea>
+
+    <div>
+        作成日
+        <input id="created-at-input">
+    </div>
+    <div>
+        <button id="enter-button">入力</button>
+    </div>
+</div>
+
+<div id="preview-wrapper" style="width:210mm;height:297mm;border:1px solid black"></div>
+
+<script>
+    var drawerPages = {{& drawerPages}};
+</script>
+<script src="bundle.js"></script>
+</body>
+</html>
