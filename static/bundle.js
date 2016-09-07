@@ -75,6 +75,11 @@
 		}
 	})
 
+	document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", function(event){
+		var setting = event.detail.setting;
+		console.log("PRINT", setting);
+	})
+
 	document.getElementById("preview-wrapper").appendChild(svg);
 	 
 	adaptToTitle();
@@ -302,6 +307,7 @@
 			});
 		}
 		updateSelectedPrinter(dom, ctx);
+		bindPrintButton(dom, ctx);
 		bindSelectPrinter(dom, ctx);
 		bindSelectPrinterRadio(dom, ctx);
 		bindSelectPrinterCancel(dom);
@@ -326,6 +332,16 @@
 		} else {
 			dom.querySelector("[data-name=selected-setting").innerText = "（プリンター未選択）";
 		}
+	}
+
+	function bindPrintButton(dom, ctx){
+		dom.querySelector("[data-name=print-button]").addEventListener("click", function(event){
+			var evt = new Event("Lg99Y7oj-print");
+			evt.detail = {
+				setting: ctx.printerSetting
+			};
+			dom.dispatchEvent(evt);
+		});
 	}
 
 	function bindSelectPrinter(dom, ctx){
@@ -397,7 +413,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a data-name=\"manageSetting\" target=\"_blank\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
+	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a target=\"_blank\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
 
 /***/ },
 /* 4 */

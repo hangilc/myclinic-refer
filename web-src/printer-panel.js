@@ -25,6 +25,7 @@ exports.setup = function(dom, config){
 		});
 	}
 	updateSelectedPrinter(dom, ctx);
+	bindPrintButton(dom, ctx);
 	bindSelectPrinter(dom, ctx);
 	bindSelectPrinterRadio(dom, ctx);
 	bindSelectPrinterCancel(dom);
@@ -49,6 +50,16 @@ function updateSelectedPrinter(dom, ctx){
 	} else {
 		dom.querySelector("[data-name=selected-setting").innerText = "（プリンター未選択）";
 	}
+}
+
+function bindPrintButton(dom, ctx){
+	dom.querySelector("[data-name=print-button]").addEventListener("click", function(event){
+		var evt = new Event("Lg99Y7oj-print");
+		evt.detail = {
+			setting: ctx.printerSetting
+		};
+		dom.dispatchEvent(evt);
+	});
 }
 
 function bindSelectPrinter(dom, ctx){

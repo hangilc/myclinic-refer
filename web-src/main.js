@@ -29,6 +29,11 @@ document.getElementById("printer-panel").addEventListener("Lg99Y7oj-edit", funct
 	}
 })
 
+document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", function(event){
+	var setting = event.detail.setting;
+	console.log("PRINT", setting);
+})
+
 document.getElementById("preview-wrapper").appendChild(svg);
  
 adaptToTitle();
