@@ -13,7 +13,17 @@ var config = {
 	"addr-line-4": "fax 09-1234-5679",
 	"clinic-name": "某内科クリニック", 
 	"doctor-name": "診療　某",
-	"printer-server-port": 8082
+	"printer-server-port": 8082,
+	"predefined": [
+		{
+			"hospital": "Ａ病院"
+		},
+		{
+			"hospital": "Ｂ病院",
+			"section": "循環器内科",
+			"doctor": "Ｃ"
+		}
+	]
 };
 
 var referApp = express();

@@ -60,6 +60,7 @@
 
 	var printerSettingKey = "ReferPrinterSetting";
 	var printerServerPort = window.printerServerPort;
+	var predefined = window.predefined;
 
 	PrinterPanel.setup(document.getElementById("printer-panel"), {
 		hasEdit: true,
@@ -125,6 +126,18 @@
 			document.querySelector("#edit-form input[name=title]").value = title;
 		});
 	});
+
+	document.getElementById("predefined").addEventListener("change", function(event){
+		var select = event.target;
+		var opt = select.querySelector("option:checked");
+		var hospital = opt.getAttribute("data-hospital") || "";
+		var section = opt.getAttribute("data-section") || "";
+		var doctor = opt.getAttribute("data-doctor") || "";
+		var form = document.getElementById("edit-form");
+		form.querySelector("input[name=refer-hospital]").value = hospital;
+		form.querySelector("input[name=refer-section]").value = section;
+		form.querySelector("input[name=refer-doctor]").value = doctor;
+	})
 
 	function adaptToTitle(){
 		var form = document.getElementById("edit-form");

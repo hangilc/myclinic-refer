@@ -12,21 +12,15 @@
 
 <div id="printer-panel"></div>
 
-<!--
-<div>
-    <button id="editButton">編集</button>
-    <button id="printButton">印刷</button>
-    <select id="selectPrinter">
-        <option value="">プリンター選択なし</option>
-    </select>
-    <button id="addPrinterButton">プリンター設定</button>
-</div>
--->
-
 <div id="editArea" style="display:none; margin: 10px 0; padding: 10px; border: 1px solid #999">
     <div>
         <select id="predefined">
-            <option value="prompt">(紹介先選択)</option>
+            <option data-name="predefined-option">(紹介先選択)</option>
+            {{#predefined}}
+            	<option data-name="predefined-option" data-hospital="{{hospital}}" data-section="{{section}}" data-doctor="{{doctor}}">
+            		{{hospital}} {{section}} {{doctor}}
+            	</option>
+            {{/predefined}}
         </select>
     </div>
     <form method="POST" action="{{baseUrl}}" id="edit-form">

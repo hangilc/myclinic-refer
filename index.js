@@ -8,6 +8,7 @@ var Refer = require("myclinic-drawer-forms").Refer;
 
 var zenkakuSpace = "　";
 var printerServerPort = 8082;
+var predefined;
 
 function repeat(n, s){
 	var parts = [];
@@ -76,6 +77,7 @@ function render(req, res, data){
 	data.drawerPages = JSON.stringify([ops]);
 	data.baseUrl = req.baseUrl;
 	data.printerServerPort = printerServerPort;
+	data.predefined = predefined;
 	var html = indexTmpl.render(data);
 	res.send(html);
 }
@@ -93,6 +95,7 @@ exports.initApp = function(app, config){
 	if( "printer-server-port" in config ){
 		printerServerPort = config["printer-server-port"];
 	}
+	predefined = config.predefined || [];
 	app.post("/", function(req, res){
 		var data = makeBaseData(config);
 		for(var key in req.body){
