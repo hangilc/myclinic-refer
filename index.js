@@ -36,15 +36,15 @@ function makePatientName(name){
 
 function makePatientInfo(birthday, age, sex){
 	var parts = [];
-	if( birthday ){
-		parts.push(birthday + "生");
-	}
+	birthday = birthday || "　　　　年　　月　　日";
+	parts.push(birthday + "生");
 	if( age || age === 0 ){
 		parts.push(age + "才");
+	} else {
+		parts.push("　　才")
 	}
-	if( sex ){
-		parts.push(sex + "性");
-	}
+	sex = sex || "　";
+	parts.push(sex + "性");
 	return parts.join(" ");
 }
 
@@ -98,8 +98,14 @@ exports.initApp = function(app, config){
 	predefined = config.predefined || [];
 	app.post("/", function(req, res){
 		var data = makeBaseData(config);
-		for(var key in req.body){
-			data[key] = req.body[key];
+		var postData;
+		if( "json-data" in req.body ){
+			postData = JSON.parse(req.body["json-data"]);
+		} else {
+			postData = req.body;
+		}
+		for(var key in postData){
+			data[key] = postData[key];
 		}
 		render(req, res, data);
 	});
