@@ -4,7 +4,7 @@ var hogan = require("hogan");
 var fs = require("fs");
 var indexTmplSrc = fs.readFileSync("./web-src/index.html", {encoding: "utf-8"});
 var indexTmpl = hogan.compile(indexTmplSrc);
-var Refer = require("myclinic-drawer-forms").Refer; 
+var Refer = require("myclinic-drawer-forms").Refer;
 
 /**
 refer.setReferDoctor("無名一郎　先生");
@@ -23,28 +23,56 @@ refer.setAddress(
 );
 ***/
 
-function setupRefer(refer, data){
+var zenkakuSpace = "　";
+
+function repeat(n, s){
+	var parts = [];
+	for(var i=0;i<n;i++){
+		parts.push(s);
+	}
+	return parts.join("");
+}
+
+function makeReferDoctor(section, name){
+	name = name || repeat(7, zenkakuSpace);
+	name += " 先生";
+	if( section ){
+		return section + "　" + name;
+	} else {
+		return name;
+	}
+}
+
+function makePatientName(name){
+	name = name || repeat(7, zenkakuSpace);
+	name += " 様";
+	return name;
+}
+
+function makePatientInfo(birthday, age, sex){
+	var parts = [];
+	if( birthday ){
+		parts.push(birthday + "生");
+	}
+	if( age || age === 0 ){
+		parts.push(age + "才");
+	}
+	if( sex ){
+		parts.push(sex + "性");
+	}
+	return parts.join(" ");
+}
+
+function setupRefer(refer, data){ 
 	if( "title" in data ){
 		refer.setTitle(data["title"]);
 	}
-	if( "hospital" in data ){
-		refer.setReferHospital(data["hospital"]);
-	}
-	if( "refer-doctor" in data ){
-		refer.setReferDoctor(data["refer-doctor"]);
-	}
-	if( "patient-name" in data ){
-		refer.setPatientName(data["patient-name"]);
-	}
-	if( "patient-info" in data ){
-		refer.setPatientInfo(data["patient-info"]);
-	}
-	if( "diagnosis" in data ){
-		refer.setDiagnosis(data["diagnosis"]);
-	}
-	if( "content" in data ){
-		refer.setContent(data["content"]);
-	}
+	refer.setReferHospital(data["refer-hospital"] || "");
+	refer.setReferDoctor(makeReferDoctor(data["refer-section"], data["refer-doctor"]));
+	refer.setPatientName(makePatientName(data["patient-name"]));
+	refer.setPatientInfo(makePatientInfo(data["patient-birthday"], data["patient-age"], data["patient-sex"]));
+	refer.setDiagnosis("診断名 " + (data["diagnosis"] || ""));
+	refer.setContent(data["content"] || "");
 	if( "issue-date" in data ){
 		refer.setIssueDate(data["issue-date"]);
 	}
@@ -57,40 +85,60 @@ function setupRefer(refer, data){
 	refer.setAddress(addr1, addr2, addr3, addr4, clinic, doctor);
 }
 
-function render(res, data){
+function render(req, res, data){
 	var refer = new Refer();
 	setupRefer(refer, data);
 	var ops = refer.getOps();
-	var html = indexTmpl.render({
-		drawerPages: JSON.stringify([ops])
-	});
+	data.drawerPages = JSON.stringify([ops]);
+	data.baseUrl = req.baseUrl;
+	var html = indexTmpl.render(data);
 	res.send(html);
 }
 
-exports.makeApp = function(express){
-	var app = express();
+function makeBaseData(config){
+	var data = {};
+	["addr-line-1", "addr-line-2", "addr-line-3", "addr-line-4", "clinic-name", "doctor-name"]
+	.forEach(function(key){
+		data[key] = config[key];
+	})
+	return data;
+}
+
+exports.initApp = function(app, config){
+	app.post("/", function(req, res){
+		var data = makeBaseData(config);
+		for(var key in req.body){
+			console.log("key", key);
+			data[key] = req.body[key];
+		}
+		console.log("BODY", req.body);
+		render(req, res, data);
+	});
 	app.get("/test", function(req, res){
-		var data = {
+		var data = makeBaseData(config);
+		var testData = {
 			"title": "紹介状",
 			"refer-hospital": "河北総合病院",
-			"refer-doctor": "循環器内科　無名一郎　先生",
-			"patient-name": "無名和子　様",
-			"patient-info": "昭和１２年１月１日生、８２才、女性",
-			"diagnosis": "診断：　呼吸困難感",
+			"refer-section": "循環器内科",
+			"refer-doctor": "無名一郎",
+			"patient-name": "無名和子",
+			"patient-birthday": "昭和１２年１月１日",
+			"patient-age": "８２",
+			"patient-sex": "女",
+			"diagnosis": "呼吸困難感",
 			"content": "いつも大変お世話になっております。\n高血圧にて当院に通院されている方ですが、３日前から呼吸困難覚があります。",
-			"issue-date": "平成２８年９月４日",
-			"addr-line-1": "〒123-4567",
-			"addr-line-2": "東京都無名区無名町 1-23-4",
-			"addr-line-3": "tel 00-1234-5678",
-			"addr-line-4": "fax 09-1234-5679",
-			"clinic-name": "某内科クリニック", 
-			"doctor-name": "診療　某"
+			"issue-date": "平成２８年９月４日"
 		}
-		render(res, data);
+		for(var key in testData){
+			data[key] = testData[key];
+		}
+		render(req, res, data);
 	});
 	app.get("/", function(req, res){
-		res.send(indexTmpl.render({}));
+		var data = makeBaseData(config);
+		render(req, res, data);
 	});
-	app.use(express.static("static"));
 	return app;
 }
+
+

@@ -59,6 +59,15 @@
 
 	document.getElementById("preview-wrapper").appendChild(svg);
 
+	document.getElementById("editButton").addEventListener("click", function(event){
+		var editArea = document.getElementById("editArea");
+		if( editArea.style.display === "none" ){
+			editArea.style.display = "block";
+		} else {
+			editArea.style.display = "none";
+		}
+	});
+
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {

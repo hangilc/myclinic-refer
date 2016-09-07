@@ -22,6 +22,7 @@
     "myclinic-drawer-forms": "^1.0.2"
   },
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "myclinic-drawer-svg": "^1.0.1",
     "raw-loader": "^0.5.1",
