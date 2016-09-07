@@ -59,11 +59,12 @@
 	});
 
 	var printerSettingKey = "ReferPrinterSetting";
+	var printerServerPort = window.printerServerPort;
 
 	PrinterPanel.setup(document.getElementById("printer-panel"), {
 		hasEdit: true,
 		settingKey: printerSettingKey,
-		printerServerPort: window.printerServerPort
+		printerServerPort: printerServerPort
 	});
 
 	document.getElementById("printer-panel").addEventListener("Lg99Y7oj-edit", function(event){
@@ -77,7 +78,30 @@
 
 	document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", function(event){
 		var setting = event.detail.setting;
-		console.log("PRINT", setting);
+		var pages = drawerPages;
+		var port = printerServerPort;
+		fetch("http://localhost:" + port + "/print", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				pages: pages,
+				setting: setting
+			}),
+			mode: "cors",
+			cache: "no-cache"
+		})
+		.then(function(response){
+			if( !response.ok ){
+				response.text().then(function(msg){
+					alert("印刷エラー：" + msg);
+				})
+			}
+		})
+		.catch(function(error){
+			alert("印刷エラー：" + error.message);
+		})
 	})
 
 	document.getElementById("preview-wrapper").appendChild(svg);
