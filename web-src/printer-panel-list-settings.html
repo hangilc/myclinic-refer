@@ -1,0 +1,7 @@
+<form onsubmit="return false">
+	<input type="radio" name="name" value="" {{#nosetting}}checked{{/nosetting}}/> （印刷設定なし）
+	{{#list}}
+		<input type="radio" name="name" value="{{name}}" {{#checked}}checked{{/checked}} />{{name}}
+	{{/list}}
+	<button data-name="cancel">キャンセル</button>
+</form>

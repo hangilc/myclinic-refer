@@ -6,24 +6,8 @@ var indexTmplSrc = fs.readFileSync("./web-src/index.html", {encoding: "utf-8"});
 var indexTmpl = hogan.compile(indexTmplSrc);
 var Refer = require("myclinic-drawer-forms").Refer;
 
-/**
-refer.setReferDoctor("無名一郎　先生");
-refer.setPatientName("無名和子　様");
-refer.setPatientInfo("昭和１２年１月１日生、８２才、女性");
-refer.setDiagnosis("診断：　呼吸困難感");
-refer.setContent("いつも大変お世話になっております。\n高血圧にて当院に通院されている方ですが、３日前から呼吸困難覚があります。")
-refer.setIssueDate("平成２８年９月４日");
-refer.setAddress(
-	"〒123-4567", 
-	"東京都無名区無名町 1-23-4", 
-	"tel 00-1234-5678", 
-	"Fax 09-1234-5679", 
-	"某内科クリニック", 
-	"診療　某"
-);
-***/
-
 var zenkakuSpace = "　";
+var printerServerPort = 8082;
 
 function repeat(n, s){
 	var parts = [];
@@ -91,10 +75,11 @@ function render(req, res, data){
 	var ops = refer.getOps();
 	data.drawerPages = JSON.stringify([ops]);
 	data.baseUrl = req.baseUrl;
+	data.printerServerPort = printerServerPort;
 	var html = indexTmpl.render(data);
 	res.send(html);
 }
-
+ 
 function makeBaseData(config){
 	var data = {};
 	["addr-line-1", "addr-line-2", "addr-line-3", "addr-line-4", "clinic-name", "doctor-name"]
@@ -105,13 +90,14 @@ function makeBaseData(config){
 }
 
 exports.initApp = function(app, config){
+	if( "printer-server-port" in config ){
+		printerServerPort = config["printer-server-port"];
+	}
 	app.post("/", function(req, res){
 		var data = makeBaseData(config);
 		for(var key in req.body){
-			console.log("key", key);
 			data[key] = req.body[key];
 		}
-		console.log("BODY", req.body);
 		render(req, res, data);
 	});
 	app.get("/test", function(req, res){
@@ -136,6 +122,7 @@ exports.initApp = function(app, config){
 	});
 	app.get("/", function(req, res){
 		var data = makeBaseData(config);
+		data.title = "紹介状";
 		render(req, res, data);
 	});
 	return app;

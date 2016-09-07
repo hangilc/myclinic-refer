@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>紹介状作成</title>
+    <style>
+    	a { text-decoration: none; }
+    </style>
 </head>
 <body>
 <h1>紹介状作成</h1>
 
+<div id="printer-panel"></div>
+
+<!--
 <div>
     <button id="editButton">編集</button>
     <button id="printButton">印刷</button>
-    <select id="selectTitle">
-        <option>紹介状</option>
-        <option>ご報告</option>
-    </select>
     <select id="selectPrinter">
         <option value="">プリンター選択なし</option>
     </select>
     <button id="addPrinterButton">プリンター設定</button>
 </div>
+-->
 
 <div id="editArea" style="display:none; margin: 10px 0; padding: 10px; border: 1px solid #999">
     <div>
@@ -26,7 +29,14 @@
             <option value="prompt">(紹介先選択)</option>
         </select>
     </div>
-    <form method="POST" action="{{baseUrl}}">
+    <form method="POST" action="{{baseUrl}}" id="edit-form">
+    	<div>
+	    	タイトル
+	    	<input name="title" value="{{title}}"/>
+	    	<input type="radio" name="title-kind" value="紹介状" />紹介状
+	    	<input type="radio" name="title-kind" value="ご報告" />ご報告
+	    	<input type="radio" name="title-kind" value="other">（その他）
+    	</div>
 	    <div>
 	        紹介先
 	        <input name="refer-hospital" value="{{refer-hospital}}">
@@ -75,6 +85,7 @@
 
 <script>
     var drawerPages = {{& drawerPages}};
+    var printerServerPort = {{printerServerPort}};
 </script>
 <script src="{{baseUrl}}/bundle.js"></script>
 </body>

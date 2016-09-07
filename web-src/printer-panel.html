@@ -1,0 +1,10 @@
+<div>
+	{{#hasEdit}}
+		<button data-name="edit-button">編集</button>
+	{{/hasEdit}}
+    <button data-name="print-button">印刷</button>
+    <span data-name="selected-setting"></span>
+    <a data-name="choose-setting" href="javascript:void(0)">プリンター選択</a> |
+    <a data-name="manageSetting" target="_blank" href="{{print-manage-url}}">プリンター管理画面へ</a>
+	<div data-name="setting-workarea"></div>
+</div>
