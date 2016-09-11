@@ -319,12 +319,12 @@
 
 	"use strict";
 
-	var hogan = __webpack_require__(4);
-	var tmplSrc = __webpack_require__(3);
+	var hogan = __webpack_require__(3);
+	var tmplSrc = __webpack_require__(6);
 	var tmpl = hogan.compile(tmplSrc);
-	var listTmplSrc = __webpack_require__(8);
+	var listTmplSrc = __webpack_require__(7);
 	var listTmpl = hogan.compile(listTmplSrc);
-	var conti = __webpack_require__(7);
+	var conti = __webpack_require__(8);
 
 	exports.setup = function(dom, config){
 		var ctx = {
@@ -448,12 +448,6 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
-
-	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a target=\"_blank\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -473,14 +467,14 @@
 
 	// This file is for use with Node.js. See dist/ for browser files.
 
-	var Hogan = __webpack_require__(5);
-	Hogan.Template = __webpack_require__(6).Template;
+	var Hogan = __webpack_require__(4);
+	Hogan.Template = __webpack_require__(5).Template;
 	Hogan.template = Hogan.Template;
 	module.exports = Hogan;
 
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -909,7 +903,7 @@
 
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1256,7 +1250,19 @@
 
 
 /***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a target=\"_blank\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
+
+/***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	module.exports = "<form onsubmit=\"return false\">\r\n\t<input type=\"radio\" name=\"name\" value=\"\" {{#nosetting}}checked{{/nosetting}}/> （印刷設定なし）\r\n\t{{#list}}\r\n\t\t<input type=\"radio\" name=\"name\" value=\"{{name}}\" {{#checked}}checked{{/checked}} />{{name}}\r\n\t{{/list}}\r\n\t<button data-name=\"cancel\">キャンセル</button>\r\n</form>"
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1460,12 +1466,6 @@
 	}
 
 	})( true ? exports : (window.conti = {}));
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	module.exports = "<form onsubmit=\"return false\">\r\n\t<input type=\"radio\" name=\"name\" value=\"\" {{#nosetting}}checked{{/nosetting}}/> （印刷設定なし）\r\n\t{{#list}}\r\n\t\t<input type=\"radio\" name=\"name\" value=\"{{name}}\" {{#checked}}checked{{/checked}} />{{name}}\r\n\t{{/list}}\r\n\t<button data-name=\"cancel\">キャンセル</button>\r\n</form>"
 
 /***/ }
 /******/ ]);

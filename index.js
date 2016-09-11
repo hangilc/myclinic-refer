@@ -2,9 +2,11 @@
 
 var hogan = require("hogan");
 var fs = require("fs");
-var indexTmplSrc = fs.readFileSync("./web-src/index.html", {encoding: "utf-8"});
+var indexTmplSrc = fs.readFileSync(__dirname + "/web-src/index.html", {encoding: "utf-8"});
 var indexTmpl = hogan.compile(indexTmplSrc);
 var Refer = require("myclinic-drawer-forms").Refer;
+
+exports.staticDir = __dirname + "/static";
 
 var zenkakuSpace = "　";
 var printerServerPort = 8082;
@@ -92,8 +94,8 @@ function makeBaseData(config){
 }
 
 exports.initApp = function(app, config){
-	if( "printer-server-port" in config ){
-		printerServerPort = config["printer-server-port"];
+	if( "print-server-port" in config ){
+		printerServerPort = config["print-server-port"];
 	}
 	predefined = config.predefined || [];
 	app.post("/", function(req, res){

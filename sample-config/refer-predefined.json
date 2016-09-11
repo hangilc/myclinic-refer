@@ -1,0 +1,10 @@
+[
+	{
+		"hospital": "Ａ病院"
+	},
+	{
+		"hospital": "Ｂ病院",
+		"section": "循環器内科",
+		"doctor": "Ｃ"
+	}
+]
