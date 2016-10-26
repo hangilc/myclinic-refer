@@ -5,6 +5,7 @@ var fs = require("fs");
 var indexTmplSrc = fs.readFileSync(__dirname + "/web-src/index.html", {encoding: "utf-8"});
 var indexTmpl = hogan.compile(indexTmplSrc);
 var Refer = require("myclinic-drawer-forms").Refer;
+var kanjidate = require("kanjidate");
 
 exports.staticDir = __dirname + "/static";
 
@@ -89,7 +90,8 @@ function makeBaseData(config){
 	["addr-line-1", "addr-line-2", "addr-line-3", "addr-line-4", "clinic-name", "doctor-name"]
 	.forEach(function(key){
 		data[key] = config[key];
-	})
+	});
+	data["issue-date"] = config["issue-date"] || kanjidate.format(kanjidate.f2, new Date());
 	return data;
 }
 
@@ -123,7 +125,8 @@ exports.initApp = function(app, config){
 			"patient-age": "８２",
 			"patient-sex": "女",
 			"diagnosis": "呼吸困難感",
-			"content": "いつも大変お世話になっております。\n高血圧にて当院に通院されている方ですが、３日前から呼吸困難覚があります。",
+			"content": "いつも大変お世話になっております。\n" + 
+				"高血圧にて当院に通院されている方ですが、３日前から呼吸困難覚があります。",
 			"issue-date": "平成２８年９月４日"
 		}
 		for(var key in testData){

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/hangilc/myclinic-refer#readme",
   "dependencies": {
     "hogan.js": "^3.0.2",
+    "kanjidate": "^1.1.0",
     "myclinic-drawer-forms": "^1.0.2"
   },
   "devDependencies": {
