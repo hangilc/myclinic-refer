@@ -46,6 +46,10 @@
 
 	"use strict";
 
+	if( !NodeList.prototype.forEach ){
+		NodeList.prototype.forEach = Array.prototype.forEach;
+	}
+
 	var drawerToSvg = __webpack_require__(1).drawerToSvg;
 	var PrinterPanel = __webpack_require__(2);
 
@@ -156,6 +160,7 @@
 			form.querySelector("input[type=radio][value=other]").checked = true;
 		}
 	}
+
 
 /***/ },
 /* 1 */
@@ -362,13 +367,19 @@
 		window.localStorage.removeItem(key);
 	}
 
-	function updateSelectedPrinter(dom, ctx){
-		var printerSetting = ctx.printerSetting;
-		if( printerSetting ){
-			dom.querySelector("[data-name=selected-setting").innerText = printerSetting;
-		} else {
-			dom.querySelector("[data-name=selected-setting").innerText = "（プリンター未選択）";
+	function removeChildren(node){
+		var fc = node.firstChild;
+		while( fc ){
+			node.removeChild(fc);
+			fc = node.firstChild;
 		}
+	}
+
+	function updateSelectedPrinter(dom, ctx){
+		var label = ctx.printerSetting || "（プリンター未選択）";
+		var node = dom.querySelector("span[data-name=selected-setting]");
+		removeChildren(node);
+		node.appendChild(document.createTextNode(label));
 	}
 
 	function bindPrintButton(dom, ctx){
@@ -383,7 +394,6 @@
 
 	function bindSelectPrinter(dom, ctx){
 		var printerServerPort = ctx.printerServerPort
-		var currentSetting = dom.querySelector("[data-name=selected-setting]").innerText;
 		dom.querySelector("[data-name=choose-setting]").addEventListener("click", function(event){
 			event.preventDefault();
 			var settings;
@@ -403,6 +413,7 @@
 					alert(err);
 					return;
 				}
+				var currentSetting = ctx.printerSetting;
 				var data = {
 					list: settings.map(function(setting){
 						return {

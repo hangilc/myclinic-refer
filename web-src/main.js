@@ -1,5 +1,9 @@
 "use strict";
 
+if( !NodeList.prototype.forEach ){
+	NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
 var drawerToSvg = require("myclinic-drawer-svg").drawerToSvg;
 var PrinterPanel = require("./printer-panel");
 
