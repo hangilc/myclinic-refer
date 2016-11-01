@@ -23,7 +23,7 @@ function repeat(n, s){
 
 function makeReferDoctor(section, name){
 	name = name || repeat(7, zenkakuSpace);
-	name += " 先生";
+	name += " 先生御机下";
 	if( section ){
 		return section + "　" + name;
 	} else {
