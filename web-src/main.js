@@ -17,13 +17,13 @@ var svg = drawerToSvg(ops,{
 });
 
 var printerSettingKey = "ReferPrinterSetting";
-var printerServerPort = window.printerServerPort;
+// var printerServerPort = window.printerServerPort;
 var predefined = window.predefined;
 
 PrinterPanel.setup(document.getElementById("printer-panel"), {
 	hasEdit: true,
 	settingKey: printerSettingKey,
-	printerServerPort: printerServerPort
+	// printerServerPort: printerServerPort
 });
 
 document.getElementById("printer-panel").addEventListener("Lg99Y7oj-edit", function(event){
@@ -38,8 +38,8 @@ document.getElementById("printer-panel").addEventListener("Lg99Y7oj-edit", funct
 document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", function(event){
 	var setting = event.detail.setting;
 	var pages = drawerPages;
-	var port = printerServerPort;
-	fetch("http://localhost:" + port + "/print", {
+	// var port = printerServerPort;
+	fetch("/printer/print", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -48,8 +48,8 @@ document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", func
 			pages: pages,
 			setting: setting
 		}),
-		mode: "cors",
-		cache: "no-cache"
+		// mode: "cors",
+		// cache: "no-cache"
 	})
 	.then(function(response){
 		if( !response.ok ){

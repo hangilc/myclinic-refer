@@ -11,11 +11,11 @@ exports.setup = function(dom, config){
 	var ctx = {
 		settingKey: config.settingKey,
 		printerSetting: getPrinterSetting(config.settingKey),
-		printerServerPort: config.printerServerPort
+		// printerServerPort: config.printerServerPort
 	};
 	var data = {
 		hasEdit: config.hasEdit,
-		"print-manage-url": "http://localhost:" + config.printerServerPort
+		"print-manage-url": "/printer/"
 	};
 	dom.innerHTML = tmpl.render(data);
 	if( data.hasEdit ){
@@ -69,13 +69,13 @@ function bindPrintButton(dom, ctx){
 }
 
 function bindSelectPrinter(dom, ctx){
-	var printerServerPort = ctx.printerServerPort
+	// var printerServerPort = ctx.printerServerPort
 	dom.querySelector("[data-name=choose-setting]").addEventListener("click", function(event){
 		event.preventDefault();
 		var settings;
 		conti.exec([
 			function(done){
-				conti.fetchJson("http://localhost:" + printerServerPort + "/setting", {}, function(err, result){
+				conti.fetchJson("/printer/setting", {}, function(err, result){
 					if( err ){
 						done(err);
 						return;

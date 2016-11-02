@@ -63,13 +63,13 @@
 	});
 
 	var printerSettingKey = "ReferPrinterSetting";
-	var printerServerPort = window.printerServerPort;
+	// var printerServerPort = window.printerServerPort;
 	var predefined = window.predefined;
 
 	PrinterPanel.setup(document.getElementById("printer-panel"), {
 		hasEdit: true,
 		settingKey: printerSettingKey,
-		printerServerPort: printerServerPort
+		// printerServerPort: printerServerPort
 	});
 
 	document.getElementById("printer-panel").addEventListener("Lg99Y7oj-edit", function(event){
@@ -84,8 +84,8 @@
 	document.getElementById("printer-panel").addEventListener("Lg99Y7oj-print", function(event){
 		var setting = event.detail.setting;
 		var pages = drawerPages;
-		var port = printerServerPort;
-		fetch("http://localhost:" + port + "/print", {
+		// var port = printerServerPort;
+		fetch("/printer/print", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -94,8 +94,8 @@
 				pages: pages,
 				setting: setting
 			}),
-			mode: "cors",
-			cache: "no-cache"
+			// mode: "cors",
+			// cache: "no-cache"
 		})
 		.then(function(response){
 			if( !response.ok ){
@@ -335,11 +335,11 @@
 		var ctx = {
 			settingKey: config.settingKey,
 			printerSetting: getPrinterSetting(config.settingKey),
-			printerServerPort: config.printerServerPort
+			// printerServerPort: config.printerServerPort
 		};
 		var data = {
 			hasEdit: config.hasEdit,
-			"print-manage-url": "http://localhost:" + config.printerServerPort
+			"print-manage-url": "/printer/"
 		};
 		dom.innerHTML = tmpl.render(data);
 		if( data.hasEdit ){
@@ -393,13 +393,13 @@
 	}
 
 	function bindSelectPrinter(dom, ctx){
-		var printerServerPort = ctx.printerServerPort
+		// var printerServerPort = ctx.printerServerPort
 		dom.querySelector("[data-name=choose-setting]").addEventListener("click", function(event){
 			event.preventDefault();
 			var settings;
 			conti.exec([
 				function(done){
-					conti.fetchJson("http://localhost:" + printerServerPort + "/setting", {}, function(err, result){
+					conti.fetchJson("/printer/setting", {}, function(err, result){
 						if( err ){
 							done(err);
 							return;
@@ -1265,7 +1265,7 @@
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a target=\"_blank\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
+	module.exports = "<div>\r\n\t{{#hasEdit}}\r\n\t\t<button data-name=\"edit-button\">編集</button>\r\n\t{{/hasEdit}}\r\n    <button data-name=\"print-button\">印刷</button>\r\n    <span data-name=\"selected-setting\"></span>\r\n    <a data-name=\"choose-setting\" href=\"javascript:void(0)\">プリンター選択</a> |\r\n    <a target=\"print-manager\" href=\"{{print-manage-url}}\">プリンター管理画面へ</a>\r\n\t<div data-name=\"setting-workarea\"></div>\r\n</div>\r\n"
 
 /***/ },
 /* 7 */
